@@ -1,6 +1,6 @@
 package model.automatic;
 
-// BEGIN PASO 7
+
 public class QuestionCreatorException extends Exception {
     public QuestionCreatorException(String message) {
         super(message);
@@ -9,4 +9,3 @@ public class QuestionCreatorException extends Exception {
         super(message, cause);
     }
 }
-// END PASO 7

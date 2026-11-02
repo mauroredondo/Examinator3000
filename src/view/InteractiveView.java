@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// BEGIN PASO 5 (Solo mostramos cambios relevantes, el resto se mantiene)
+
 public class InteractiveView extends BaseView {
 
     @Override
@@ -166,7 +166,7 @@ public class InteractiveView extends BaseView {
         String newStatement = Esdia.readString_ne("Nuevo enunciado [" + q.getStatement() + "]: ");
         if (!newStatement.isEmpty()) q.setStatement(newStatement);
 
-        // Para simplificar esta práctica, si se quieren modificar opciones se piden todas de nuevo
+        // Para simplificar, si se quieren modificar opciones se piden todas de nuevo
         if (Esdia.yesOrNo("¿Desea modificar las opciones?")) {
             List<Option> newOptions = new ArrayList<>();
             for (int i = 1; i <= 4; i++) {
@@ -210,7 +210,7 @@ public class InteractiveView extends BaseView {
     private void menuExam() {
         System.out.println("\n--- MODO EXAMEN ---");
         
-        // 1. Obtener Temas
+        //Obtener Temas
         Set<String> topics = controller.getAvailableTopics();
         if (topics.isEmpty()) {
             System.out.println("No hay preguntas suficientes para generar un examen.");
@@ -227,7 +227,7 @@ public class InteractiveView extends BaseView {
         int topicOpt = Esdia.readInt("Elija tema: ", 1, topicList.size() + 1);
         String selectedTopic = (topicOpt <= topicList.size()) ? topicList.get(topicOpt - 1) : "TODOS";
 
-        // 2. Elegir número de preguntas
+        //Elegir número de preguntas
         int max = controller.getMaxQuestions(selectedTopic);
         if (max == 0) {
             System.out.println("No hay preguntas de ese tema.");
@@ -235,14 +235,14 @@ public class InteractiveView extends BaseView {
         }
         int numQuestions = Esdia.readInt("Número de preguntas (1-" + max + "): ", 1, max);
 
-        // 3. Iniciar Examen
+        //Iniciar Examen
         controller.startExam(selectedTopic, numQuestions);
         Exam exam = controller.getCurrentExam();
         List<Question> questions = exam.getQuestions();
 
         System.out.println("\n¡Examen iniciado! (" + numQuestions + " preguntas)");
         
-        // 4. Bucle de preguntas
+        //Bucle de preguntas
         for (int i = 0; i < questions.size(); i++) {
             Question q = questions.get(i);
             System.out.println("\nPregunta " + (i + 1) + "/" + numQuestions + ":");
@@ -273,7 +273,7 @@ public class InteractiveView extends BaseView {
             }
         }
 
-        // 5. Resultados
+        //Resultados
         Exam.ExamResult result = controller.finishExam();
         System.out.println("\n--- RESULTADOS DEL EXAMEN ---");
         System.out.printf("Nota final: %.2f / 10.0%n", result.grade);
@@ -336,4 +336,4 @@ public class InteractiveView extends BaseView {
         System.out.println("Saliendo de Examinator 3000...");
     }
 }
-// END PASO 4
+

@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// BEGIN PASO 7
+
 public class GeminiQuestionCreator implements QuestionCreator {
 
     private final String modelId;
@@ -36,10 +36,10 @@ public class GeminiQuestionCreator implements QuestionCreator {
         // Usamos try-with-resources para asegurar que se cierra la conexión
         try (GenAiFacade genai = new GenAiFacade(config)) {
             
-            // 1. Definimos el esquema esperado usando las clases DTO (definidas abajo)
+            //Definimos el esquema esperado usando las clases DTO
             Schema schema = SimpleSchemas.from(QuestionDTO.class);
 
-            // 2. Creamos el prompt específico
+            //Creamos el prompt específico
             String prompt = String.format(
                 "Genera una pregunta de tipo test difícil sobre el tema '%s'. " +
                 "Debe tener un enunciado claro y exactamente 4 opciones. " +
@@ -48,10 +48,10 @@ public class GeminiQuestionCreator implements QuestionCreator {
                 topic
             );
 
-            // 3. Llamada a la IA solicitando un objeto estructurado (JSON)
+            //Llamada a la IA solicitando un objeto estructurado (JSON)
             QuestionDTO dto = genai.generateJson(prompt, schema, QuestionDTO.class);
 
-            // 4. Convertir el DTO (objeto de transferencia) a nuestro Modelo de Dominio
+            //Convertir el DTO a nuestro Modelo de Dominio
             if (dto.options == null || dto.options.size() != 4) {
                 throw new QuestionCreatorException("La IA no generó 4 opciones válidas.");
             }
@@ -61,7 +61,7 @@ public class GeminiQuestionCreator implements QuestionCreator {
                 domainOptions.add(new Option(optDto.text, optDto.rationale, optDto.isCorrect));
             }
             
-            // Validar que haya exactamente 1 correcta (defensa extra)
+            // Validar que haya exactamente 1 correcta
             long correctCount = domainOptions.stream().filter(Option::isCorrect).count();
             if (correctCount != 1) {
                 throw new QuestionCreatorException("La IA generó " + correctCount + " respuestas correctas, se requiere 1.");
@@ -77,7 +77,7 @@ public class GeminiQuestionCreator implements QuestionCreator {
         }
     }
 
-    // --- DTOs (Data Transfer Objects) para mapear la respuesta de la IA ---
+    // --- DTOs ---
     // Tienen que ser public static para que la librería pueda instanciarlos
     
     public static class QuestionDTO {
@@ -91,4 +91,3 @@ public class GeminiQuestionCreator implements QuestionCreator {
         public boolean isCorrect;
     }
 }
-// END PASO 7

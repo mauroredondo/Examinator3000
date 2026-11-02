@@ -6,18 +6,18 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Set;
 
-// BEGIN PASO 2
+
 public class Question implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private UUID id;                // Identificador único [cite: 271]
-    private String author;          // Autor [cite: 275]
+    private UUID id;                // Identificador único 
+    private String author;          // Autor 
     private HashSet<String> topics; // Temas (Set para evitar duplicados) 
-    private String statement;       // Enunciado [cite: 278]
-    private List<Option> options;   // Lista de opciones (4) [cite: 279]
+    private String statement;       // Enunciado 
+    private List<Option> options;   // Lista de opciones 
 
     public Question(String author, String statement, List<Option> options, Set<String> rawTopics) {
-        this.id = UUID.randomUUID(); // Generado automáticamente [cite: 271]
+        this.id = UUID.randomUUID(); // Generado automáticamente 
         this.author = author;
         this.statement = statement;
         this.options = options;
@@ -64,4 +64,3 @@ public class Question implements Serializable {
         return id.hashCode();
     }
 }
-// END PASO 2

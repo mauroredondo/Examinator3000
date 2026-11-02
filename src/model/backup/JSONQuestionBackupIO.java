@@ -9,14 +9,14 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.List;
 
-// BEGIN PASO 5
+
 public class JSONQuestionBackupIO implements QuestionBackupIO {
 
     private final Gson gson;
     private final String BASE_PATH;
 
     public JSONQuestionBackupIO() {
-        // Configuramos Gson para que el JSON sea legible (Pretty Printing)
+        // Configuramos Gson para que el JSON sea legible
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.BASE_PATH = System.getProperty("user.home") + File.separator;
     }
@@ -54,4 +54,3 @@ public class JSONQuestionBackupIO implements QuestionBackupIO {
         }
     }
 }
-// END PASO 5

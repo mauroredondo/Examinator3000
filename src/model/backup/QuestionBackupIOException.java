@@ -1,6 +1,6 @@
 package model.backup;
 
-// BEGIN PASO 5
+
 public class QuestionBackupIOException extends Exception {
     public QuestionBackupIOException(String message) {
         super(message);
@@ -9,4 +9,3 @@ public class QuestionBackupIOException extends Exception {
         super(message, cause);
     }
 }
-// END PASO 5

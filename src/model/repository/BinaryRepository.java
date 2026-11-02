@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// BEGIN PASO 3
+
 public class BinaryRepository implements IRepository {
     
     private ArrayList<Question> questions;
@@ -46,8 +46,6 @@ public class BinaryRepository implements IRepository {
     public void addQuestion(Question q) throws RepositoryException {
         if (q == null) throw new RepositoryException("La pregunta no puede ser nula.");
         questions.add(q);
-        // Podríamos guardar en cada operación, pero el PDF dice "al finalizar" o "en cada operación".
-        // Dejaremos el guardado explícito al final por eficiencia, aunque lo llamaremos desde el Controller.
     }
 
     @Override
@@ -73,4 +71,3 @@ public class BinaryRepository implements IRepository {
         return new ArrayList<>(questions);
     }
 }
-// END PASO 3

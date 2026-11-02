@@ -2,19 +2,22 @@ package model;
 
 import java.io.Serializable;
 
-// BEGIN PASO 2
+
 public class Option implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String text;      // Texto de la opción [cite: 280]
-    private String rationale; // Justificación [cite: 281]
-    private boolean correct;  // Si es correcta [cite: 282]
+    private String text;       
+    private String rationale; 
+    private boolean correct;  
 
     public Option(String text, String rationale, boolean correct) {
         this.text = text;
         this.rationale = rationale;
         this.correct = correct;
     }
+
+
+    // Getters y Setters
 
     public String getText() {
         return text;
@@ -42,4 +45,3 @@ public class Option implements Serializable {
         return text;
     }
 }
-// END PASO 2

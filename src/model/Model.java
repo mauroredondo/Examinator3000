@@ -24,13 +24,13 @@ public class Model {
         this.questionCreators = questionCreators;
     }
 
-    // --- MÉTODOS DE PERSISTENCIA (PASO 3) ---
+    // --- MÉTODOS DE PERSISTENCIA ---
 
     public void saveChanges() throws RepositoryException {
         repository.save();
     }
 
-    // --- MÉTODOS CRUD (PASO 4) ---
+    // --- MÉTODOS CRUD ---
 
     public List<Question> getAllQuestions() throws RepositoryException {
         return repository.getAllQuestions();
@@ -54,7 +54,7 @@ public class Model {
         repository.modifyQuestion(q);
     }
 
-    // --- IMPORTACIÓN / EXPORTACIÓN (PASO 5) ---
+    // --- IMPORTACIÓN / EXPORTACIÓN ---
 
     public void exportData(String filename) throws QuestionBackupIOException, RepositoryException {
         List<Question> questions = repository.getAllQuestions();
@@ -81,7 +81,7 @@ public class Model {
         return addedCount;
     }
 
-    // --- MODO EXAMEN (PASO 6) ---
+    // --- MODO EXAMEN ---
 
     public Set<String> getAvailableTopics() throws RepositoryException {
         List<Question> all = repository.getAllQuestions();

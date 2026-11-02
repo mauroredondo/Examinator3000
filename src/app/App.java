@@ -13,17 +13,16 @@ import model.automatic.QuestionCreator;
 import java.util.ArrayList;
 import java.util.List;
 
-// BEGIN PASO 5
+
 public class App {
     public static void main(String[] args) {
         
-        // 1. Repositorio (Persistencia Binaria)
+        // Repositorio de preguntas
         IRepository repository = new BinaryRepository();
 
-        // 2. Sistema de Backup (JSON con Gson) -> NUEVO
+        // Sistema de Backup (JSON con Gson)
         QuestionBackupIO backupIO = new JSONQuestionBackupIO();
 
-        // 1. Configurar Lista de Creadores
         List<QuestionCreator> creators = new ArrayList<>();
         
         // Lógica de argumentos: java -jar app.jar -question-creator [model] [key]
@@ -39,18 +38,17 @@ public class App {
             }
         }
 
-        // 3. Modelo (recibe ambos)
+        //Modelo
         Model model = new Model(repository, backupIO, creators);
 
-        // 4. Vista
+        //Vista
         InteractiveView view = new InteractiveView();
 
-        // 5. Controlador
+        //Controlador
         Controller controller = new Controller(model, view);
 
-        // 6. Configurar y arrancar
+        //Configurar y arrancar
         view.setController(controller);
         controller.start();
     }
 }
-// END PASO 5

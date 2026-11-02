@@ -13,7 +13,7 @@ import model.automatic.QuestionCreatorException;
 import java.util.List;
 import java.util.Set;
 
-// BEGIN PASO 5
+
 public class Controller {
     
     private Model model;
@@ -96,7 +96,7 @@ public class Controller {
         }
     }
 
-// END PASO 5
+
 // --- MÉTODOS MODO EXAMEN ---
 
     public Set<String> getAvailableTopics() {

@@ -1,7 +1,7 @@
 package model.repository;
 
-// BEGIN PASO 2
-// Excepción personalizada para errores del repositorio [cite: 254]
+
+// Excepción personalizada para errores del repositorio
 public class RepositoryException extends Exception {
     public RepositoryException(String message) {
         super(message);
@@ -10,4 +10,3 @@ public class RepositoryException extends Exception {
         super(message, cause);
     }
 }
-// END PASO 2

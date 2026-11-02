@@ -4,7 +4,7 @@ import model.Question;
 import model.Option;
 import java.util.List;
 
-// BEGIN PASO 6
+
 public class Exam {
     private List<Question> questions;
     private int[] answers; // Almacena el índice de la opción elegida (-1 si no contestada)
@@ -14,7 +14,7 @@ public class Exam {
     public Exam(List<Question> questions) {
         this.questions = questions;
         this.answers = new int[questions.size()];
-        // Inicializamos respuestas a -1 (no contestado)
+        // Inicializamos respuestas a -1 
         for (int i = 0; i < answers.length; i++) {
             answers[i] = -1;
         }
@@ -97,4 +97,3 @@ public class Exam {
         }
     }
 }
-// END PASO 6
