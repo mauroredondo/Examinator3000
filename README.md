@@ -37,7 +37,7 @@ java -jar Examinator3000_RedondoMauro.jar
 java -jar Examinator3000_RedondoMauro.jar -question-creator <modelo-gemini> <TU_API_KEY>
 ```
 
-Necesitas una clave de API de Gemini (se puede obtener gratis en Google AI Studio). **No subas nunca tu clave a GitHub.**
+Necesitas una clave de API de Gemini (se puede obtener gratis en Google AI Studio).
 
 ## Tecnologías
 
