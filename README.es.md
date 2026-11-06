@@ -4,7 +4,7 @@
 
 Aplicación de consola en Java para crear un banco de preguntas tipo test, hacer exámenes de práctica con él y, de forma opcional, generar preguntas nuevas con Google Gemini.
 
-Está organizada en MVC, con interfaces pequeñas para el almacenamiento, la copia de seguridad y la generación de preguntas, de modo que cada pieza se puede cambiar sin tocar el resto.
+Proyecto realizado en la asignatura de Programación de la Universidad de Salamanca. Está organizada en MVC, con interfaces pequeñas para el almacenamiento, la copia de seguridad y la generación de preguntas, de modo que cada pieza se puede cambiar sin tocar el resto.
 
 ## Qué hace
 
@@ -16,12 +16,12 @@ Está organizada en MVC, con interfaces pequeñas para el almacenamiento, la cop
 
 ## Requisitos
 
-- Java 17 o superior (desarrollado y probado con Java 21).
+- Java 21 (la versión con la que se desarrolló y probó).
 - Las librerías de `lib/`:
   - `gson-2.10.1.jar`: JSON.
   - `biblioteca11.jar`: utilidades de entrada por consola (`com.coti.tools.Esdia`).
   - `genai-fatjar-1.0.0.jar`: una fachada sobre el SDK de Google GenAI (`es.usal.genai`).
-- Una clave de API de Gemini, solo si quieres usar la generación de preguntas.
+- Una clave de API de Gemini, solo si quieres usar la generación de preguntas (se puede obtener gratis en Google AI Studio).
 
 ## Compilar y ejecutar
 
@@ -98,6 +98,20 @@ El modelo solo depende de las tres interfaces (`IRepository`, `QuestionBackupIO`
 - Las preguntas generadas solo se verifican en su estructura: el programa no comprueba que la respuesta marcada sea realmente la correcta ni que la pregunta no esté repetida.
 - El archivo binario depende de la clase `Question`, así que va ligado a una versión del código. La exportación a JSON es la copia de seguridad portable.
 - Las opciones se muestran en el orden guardado, sin barajar.
+
+## Tecnologías
+
+Java 21 · POO · MVC · Serialización · JSON (Gson) · API de Gemini · Salida estructurada con JSON Schema
+
+## Nota sobre la librería de IA
+
+La conexión con Gemini se hace mediante una librería proporcionada por la asignatura (`es.usal.genai`). La parte desarrollada por mí es el prompt, el esquema de la pregunta, la validación de la respuesta y la integración en la arquitectura MVC.
+
+## Qué aprendí
+
+- Diseñar una aplicación por capas con interfaces para poder cambiar componentes.
+- Integrar un LLM en una aplicación real: construir el prompt, forzar una respuesta en JSON con esquema y validar la salida antes de usarla.
+- Gestionar la persistencia y la copia de seguridad de los datos.
 
 ## Autor
 

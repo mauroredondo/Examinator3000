@@ -4,7 +4,7 @@
 
 A console application in Java for building a bank of multiple-choice questions, taking practice exams from it and, optionally, generating new questions with Google Gemini.
 
-It is organised as MVC with small interfaces for storage, backup and question generation, so each piece can be replaced without touching the rest.
+It was built for the Programming course at the University of Salamanca. It is organised as MVC with small interfaces for storage, backup and question generation, so each piece can be replaced without touching the rest.
 
 ## Features
 
@@ -16,12 +16,12 @@ It is organised as MVC with small interfaces for storage, backup and question ge
 
 ## Requirements
 
-- Java 17 or later (developed and tested with Java 21).
+- Java 21 (the version it was developed and tested with).
 - The libraries in `lib/`:
   - `gson-2.10.1.jar`: JSON.
   - `biblioteca11.jar`: console input helpers (`com.coti.tools.Esdia`).
   - `genai-fatjar-1.0.0.jar`: a facade over the Google GenAI SDK (`es.usal.genai`).
-- A Gemini API key, only if you want to use question generation.
+- A Gemini API key, only if you want to use question generation (you can get one for free in Google AI Studio).
 
 ## Build and run
 
@@ -98,6 +98,20 @@ The model depends only on the three interfaces (`IRepository`, `QuestionBackupIO
 - Generated questions are not verified beyond their structure: the program does not check that the marked answer is actually correct, nor that the question is not a duplicate.
 - The binary file depends on the `Question` class, so it is tied to a given version of the code. JSON export is the portable backup.
 - Options are shown in the stored order, not shuffled.
+
+## Technologies
+
+Java 21 · OOP · MVC · Java serialization · JSON (Gson) · Gemini API · Structured output with JSON Schema
+
+## About the AI library
+
+The connection to Gemini goes through a library provided by the course (`es.usal.genai`). What I wrote is the prompt, the question schema, the validation of the answer and the integration into the MVC architecture.
+
+## What I learned
+
+- Designing a layered application with interfaces so that components can be swapped.
+- Integrating an LLM into a real application: building the prompt, forcing a JSON answer with a schema and validating the output before using it.
+- Handling persistence and backup of the data.
 
 ## Author
 
