@@ -39,8 +39,8 @@ public class Model {
     public void createQuestion(String author, String statement, Set<String> topics, List<Option> options) 
             throws RepositoryException {
         
-        validateOptions(options);
-        
+        validateQuestion(statement, options);
+
         Question q = new Question(author, statement, options, topics);
         repository.addQuestion(q);
     }
@@ -50,7 +50,7 @@ public class Model {
     }
 
     public void updateQuestion(Question q) throws RepositoryException {
-        validateOptions(q.getOptions());
+        validateQuestion(q.getStatement(), q.getOptions());
         repository.modifyQuestion(q);
     }
 
@@ -61,24 +61,52 @@ public class Model {
         backupIO.exportQuestions(questions, filename);
     }
 
-    public int importData(String filename) throws QuestionBackupIOException, RepositoryException {
+    // Resultado de una importación: cuántas preguntas se añadieron, cuántas ya existían
+    // (mismo ID) y cuántas se descartaron por no ser válidas.
+    public record ImportResult(int added, int duplicates, int invalid) {}
+
+    public ImportResult importData(String filename) throws QuestionBackupIOException, RepositoryException {
         List<Question> importedQuestions = backupIO.importQuestions(filename);
         List<Question> currentQuestions = repository.getAllQuestions();
-        
+
         // Obtenemos los IDs existentes para comparar rápidamente
         Set<UUID> existingIds = currentQuestions.stream()
                                     .map(Question::getId)
                                     .collect(Collectors.toSet());
-        
-        int addedCount = 0;
+
+        int added = 0, duplicates = 0, invalid = 0;
         for (Question q : importedQuestions) {
-            // Solo añadimos si el ID no existe ya en el banco
-            if (!existingIds.contains(q.getId())) {
+            // Gson rellena los campos sin pasar por el constructor, así que una pregunta
+            // importada hay que validarla y normalizarla antes de aceptarla
+            if (!normalizeImported(q)) {
+                invalid++;
+            } else if (existingIds.contains(q.getId())) {
+                // Solo añadimos si el ID no existe ya en el banco
+                duplicates++;
+            } else {
                 repository.addQuestion(q);
-                addedCount++;
+                existingIds.add(q.getId());
+                added++;
             }
         }
-        return addedCount;
+        return new ImportResult(added, duplicates, invalid);
+    }
+
+    // Devuelve false si la pregunta importada no es válida; si lo es, la deja normalizada
+    private boolean normalizeImported(Question q) {
+        if (q == null) return false;
+        try {
+            validateQuestion(q.getStatement(), q.getOptions());
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+        q.setTopics(q.getTopics());          // mayúsculas y sin espacios sobrantes
+        if (q.getTopics().isEmpty()) return false;
+        if (q.getId() == null) q.setId(UUID.randomUUID());
+        for (Option o : q.getOptions()) {
+            if (o.getRationale() == null) o.setRationale("");
+        }
+        return true;
     }
 
     // --- MODO EXAMEN ---
@@ -144,9 +172,21 @@ public class Model {
 
     // --- VALIDACIONES INTERNAS ---
 
+    private void validateQuestion(String statement, List<Option> options) {
+        if (statement == null || statement.trim().isEmpty()) {
+            throw new IllegalArgumentException("El enunciado no puede estar vacío.");
+        }
+        validateOptions(options);
+    }
+
     private void validateOptions(List<Option> options) {
         if (options == null || options.size() != 4) {
             throw new IllegalArgumentException("La pregunta debe tener exactamente 4 opciones.");
+        }
+        for (Option o : options) {
+            if (o == null || o.getText() == null || o.getText().trim().isEmpty()) {
+                throw new IllegalArgumentException("Todas las opciones deben tener texto.");
+            }
         }
         long correctCount = options.stream().filter(Option::isCorrect).count();
         if (correctCount != 1) {

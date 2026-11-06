@@ -86,10 +86,15 @@ public class Controller {
 
     public void importFromJSON(String filename) {
         try {
-            int count = model.importData(filename);
-            view.showMessage("Importación finalizada. Se añadieron " + count + " preguntas nuevas.");
-            if (count == 0) {
-                view.showMessage("(Posiblemente todas las preguntas del fichero ya existían en el banco).");
+            Model.ImportResult result = model.importData(filename);
+            view.showMessage("Importación finalizada. Se añadieron " + result.added() + " preguntas nuevas.");
+            if (result.duplicates() > 0) {
+                view.showMessage(result.duplicates() + " ya existían en el banco y se omitieron.");
+            }
+            if (result.invalid() > 0) {
+                view.showErrorMessage(result.invalid() + " preguntas del fichero no eran válidas "
+                        + "(sin enunciado, sin 4 opciones con texto, sin una única correcta o sin tema) "
+                        + "y se descartaron.");
             }
         } catch (QuestionBackupIOException | RepositoryException e) {
             view.showErrorMessage("Error al importar: " + e.getMessage());

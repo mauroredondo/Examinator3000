@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,20 @@ public class Question implements Serializable {
         setTopics(rawTopics);
     }
 
+    // Copia profunda con el mismo ID. Sirve para editar una pregunta sin tocar la original
+    // hasta que los cambios estén validados.
+    public Question copy() {
+        List<Option> optionsCopy = new ArrayList<>();
+        if (options != null) {
+            for (Option o : options) {
+                optionsCopy.add(new Option(o.getText(), o.getRationale(), o.isCorrect()));
+            }
+        }
+        Question c = new Question(author, statement, optionsCopy, topics);
+        c.setId(id);
+        return c;
+    }
+
     // Getters y Setters
     public UUID getId() { return id; }
     
@@ -40,7 +55,9 @@ public class Question implements Serializable {
         this.topics = new HashSet<>();
         if (rawTopics != null) {
             for (String t : rawTopics) {
-                this.topics.add(t.toUpperCase().trim());
+                if (t != null && !t.trim().isEmpty()) {
+                    this.topics.add(t.toUpperCase().trim());
+                }
             }
         }
     }

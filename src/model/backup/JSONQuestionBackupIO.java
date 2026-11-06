@@ -7,6 +7,7 @@ import model.Question;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 
@@ -27,7 +28,7 @@ public class JSONQuestionBackupIO implements QuestionBackupIO {
         if (!filename.endsWith(".json")) filename += ".json";
         File file = new File(BASE_PATH + filename);
 
-        try (Writer writer = new FileWriter(file)) {
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             gson.toJson(questions, writer);
         } catch (IOException e) {
             throw new QuestionBackupIOException("Error al exportar JSON a " + file.getAbsolutePath(), e);
@@ -43,14 +44,20 @@ public class JSONQuestionBackupIO implements QuestionBackupIO {
             throw new QuestionBackupIOException("El fichero " + file.getAbsolutePath() + " no existe.");
         }
 
-        try (Reader reader = new FileReader(file)) {
+        List<Question> questions;
+        try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
             // TypeToken es necesario para que Gson entienda que queremos una List<Question>
             Type listType = new TypeToken<List<Question>>(){}.getType();
-            return gson.fromJson(reader, listType);
+            questions = gson.fromJson(reader, listType);
         } catch (IOException e) {
             throw new QuestionBackupIOException("Error al importar JSON desde " + file.getAbsolutePath(), e);
         } catch (Exception e) { // Captura errores de parseo JSON malformado
             throw new QuestionBackupIOException("El fichero no tiene un formato JSON de preguntas válido.", e);
         }
+        // Un fichero vacío (o con "null") hace que Gson devuelva null en vez de lanzar error
+        if (questions == null) {
+            throw new QuestionBackupIOException("El fichero está vacío o no contiene una lista de preguntas.");
+        }
+        return questions;
     }
 }

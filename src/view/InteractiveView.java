@@ -160,11 +160,16 @@ public class InteractiveView extends BaseView {
         }
     }
 
-    private void modifyQuestionForm(Question q) {
+    private void modifyQuestionForm(Question original) {
         System.out.println("Modificando pregunta (deje en blanco para mantener valor actual).");
-        
-        String newStatement = Esdia.readString_ne("Nuevo enunciado [" + q.getStatement() + "]: ");
-        if (!newStatement.isEmpty()) q.setStatement(newStatement);
+
+        // Se edita una copia: la pregunta original no cambia hasta que el modelo
+        // valida y guarda los cambios
+        Question q = original.copy();
+
+        // readString admite vacío (readString_ne no), que es lo que hace falta para "mantener"
+        String newStatement = Esdia.readString("Nuevo enunciado [" + q.getStatement() + "]: ");
+        if (!newStatement.trim().isEmpty()) q.setStatement(newStatement);
 
         // Para simplificar, si se quieren modificar opciones se piden todas de nuevo
         if (Esdia.yesOrNo("¿Desea modificar las opciones?")) {
@@ -183,7 +188,8 @@ public class InteractiveView extends BaseView {
             controller.modifyQuestion(q);
             showMessage("Pregunta modificada correctamente.");
         } catch (Exception e) {
-            showErrorMessage("Error al guardar modificación: " + e.getMessage());
+            showErrorMessage("Error al guardar modificación: " + e.getMessage()
+                    + " (la pregunta original no se ha modificado)");
         }
     }
 
